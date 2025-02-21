@@ -1,9 +1,17 @@
 const express = require('express');
+const serverless = require('serverless-http');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
+const router = express.Router();
 
+router.get("/", (req, res) => {
+	res.send("Proxy is running..");
+});
+app.use("/.netlify/functions/app", router);
+module.exports.handler = serverless(app);
 app.use(express.json());
+
 let accessToken = null;
 let name="";
 let email="";
