@@ -2,7 +2,7 @@
   "name": "fetch-shim",
   "version": "1.0.0",
   "description": "Middleware for Fetch API",
-  "main": "index.js",
+  "main": "proxy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
