@@ -11,8 +11,10 @@ let name="";
 let email="";
 let loggedIn=false;
 
-app.use(cors({ origin: 'https://dog-matcher-todd-parsons.netlify.app', credentials: true }));
-app.options('*', cors({ origin: 'https://dog-matcher-todd-parsons.netlify.app', credentials: true }));
+app.use(cors());
+app.use(cors({ origin: '*', credentials: true }));
+// app.use(cors({ origin: 'https://dog-matcher-todd-parsons.netlify.app', credentials: true }));
+// app.options('*', cors({ origin: 'https://dog-matcher-todd-parsons.netlify.app', credentials: true }));
 
 // Function to login and fetch the cookie
 async function login() {
@@ -61,6 +63,16 @@ app.use(async (req, res, next) => {
 
   const apiUrl = `https://frontend-take-home-service.fetch.com${req.path}`;
   console.log(`Intercepting ${req.path} and redirecting to ${req.method} ${apiUrl} (Body: ${JSON.stringify(req.body)})`);
+  if (req.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      },
+    };
+  }
   try {
     const apiResponse = await axios({
       method: req.method,
