@@ -6,3 +6,9 @@
 	status = 200
 	from = "/*"
 	to = "/.netlify/functions/api"
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "https://dog-matcher-todd-parsons.netlify.app"
+    Access-Control-Allow-Headers = "Content-Type"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"

@@ -63,16 +63,20 @@ app.use(async (req, res, next) => {
 
   const apiUrl = `https://frontend-take-home-service.fetch.com${req.path}`;
   console.log(`Intercepting ${req.path} and redirecting to ${req.method} ${apiUrl} (Body: ${JSON.stringify(req.body)})`);
+  const headers = {
+    'Access-Control-Allow-Origin': 'https://dog-matcher-todd-parsons.netlify.app',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+  };
+  
+  // Handle OPTIONS requests for preflight
   if (req.httpMethod === 'OPTIONS') {
     return {
       statusCode: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      },
+      headers: headers
     };
   }
+  
   try {
     const apiResponse = await axios({
       method: req.method,
@@ -81,7 +85,7 @@ app.use(async (req, res, next) => {
       params: req.query,
       data: req.body,
     });
-    res.status(apiResponse.status).json(apiResponse.data);
+    res.set(headers).status(apiResponse.status).json(apiResponse.data);
     console.log(`Server responded with ${apiResponse.status}`);
     if (req.url==='/auth/logout') {
       accessToken=null;
